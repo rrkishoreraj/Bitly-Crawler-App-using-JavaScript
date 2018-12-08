@@ -18,7 +18,15 @@ h1 {
   background-color: lightgrey;
 }
 
-#matchedURLs {
-  background-color:yellow;
-  display: none;
+#displaySearchedURLs {
+  background-color: coral;
+}
+
+#totalFetchedLinks {
+  background-color: lightcoral;
+}
+
+.displayMatchedURLs {
+  background-color: violet;
+  font-size: 25px;
 }

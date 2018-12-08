@@ -22,18 +22,20 @@
       </center>  
       <div>
         <input type="radio" name="fetchOption" id="radio1">links.json
-        <input type="radio" name="fetchOption" id="radio2" checked>testfile.json
+        <input type="radio" name="fetchOption" id="radio2" checked>testfile.json &nbsp
+        <input type="button" id="fetchurl" value="Fetch URL" onclick="fetchurl()">        
       </div>
       <br><hr>
     </div>
-    <div style="background-color:coral;">
-      <br>
-      <label>Search URL's: </label>
-      <input type="text" placeholder="bit.ly" onkeyup="searchurl(this.value)">
-      <input type="button" id="fetchurl" value="Fetch URL" onclick="fetchurl()"> &nbsp
+    <div id="displaySearchedURLs">
+      <br>&nbsp
+      <span>
+        <label>Search URL's: </label>
+        <input type="text" placeholder="bit.ly" onkeyup="searchurl(this.value)"> 
+      </span>
       <br><br>
     </div>
-    <div style="background-color:lightcoral;"><br>
+    <div id="totalFetchedLinks"><br>&nbsp
       <span>Total URL's fetched:</span><span id="totalLinks">&nbsp0&nbsp<i>links</i></span>
       <span id="requestStatus">
       Request status code = NIL
@@ -45,8 +47,6 @@
     </center>
     <br>
     <div id="displayFetchedUrls"> 
-    </div>
-    <div id="matchedURLs">
     </div>
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->
