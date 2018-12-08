@@ -1,0 +1,24 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 2em;
+  font-size:20px;
+}
+
+h1 {
+  font-style: italic;
+}
+
+#requestStatus {
+  padding-left: 900px;
+}
+
+.headercolor {
+  background-color: lightgrey;
+}
+
+#matchedURLs {
+  background-color:yellow;
+  display: none;
+}
