@@ -9,15 +9,16 @@ body {
 h1 {
   font-style: italic;
 }
-
+/*
 #fetchTime{
   padding-left: 350px;
 }
 
+
 #requestStatus {
   padding-left: 370px;
 }
-
+*/
 .headercolor {
   background-color: lightgrey;
 }
@@ -28,9 +29,22 @@ h1 {
 
 #totalFetchedLinks {
   background-color: lightcoral;
+  font-size: 17px;
+  padding: 10px;
 }
 
 .displayMatchedURLs {
   background-color: violet;
   font-size: 25px;
+}
+
+.row:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.column{
+  float: left;
+  width: 33%;
 }
