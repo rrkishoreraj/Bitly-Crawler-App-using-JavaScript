@@ -17,13 +17,9 @@ A web application built using JavaScript to fetch the **URLs** from the specific
 
   The **links.json** file contains **35 links** and the **test-file.json** file contains **5005 links**. 
 
-  The **test-file.json** is similar to **Test data** in [Bitly Elm App](https://bitly-elm.glitch.me/). 
-
-  But the only difference is that the **Test data** uses **'API'** to fetch URLs whereas the **testfile.json** uses **'AJAX'** to fetch the URLs.
-
   The links (URLs) in **testfile.json** is created by simply pasting the links from the **links.json** file for about **143 times** ( 143 x 35 = 5005 links ).
 
-  The links in **json files** are fetched by making an **AJAX Call** to the required JSON file using the **'GET'** request.
+  The links in the above two **json files** are fetched by making an **AJAX Call** to the required JSON file using the **'GET'** request.
 
   After the URLs are fetched, we can now search for the required URL.
  
