@@ -10,8 +10,12 @@ h1 {
   font-style: italic;
 }
 
+#fetchTime{
+  padding-left: 350px;
+}
+
 #requestStatus {
-  padding-left: 900px;
+  padding-left: 370px;
 }
 
 .headercolor {
@@ -30,3 +34,4 @@ h1 {
   background-color: violet;
   font-size: 25px;
 }
+
