@@ -48,8 +48,9 @@ var toggleButton = document.getElementById("toggleMatchedAll");
 function searchurl(needleurl){
   needleToDisplayMatchedURLs = needleurl;
   var i = 0;
-  var hayurl = document.getElementById("block" + i).innerHTML;
+  var hayurl = document.getElementById("block" + i);
   while (hayurl){
+    hayurl = hayurl.innerHTML;
     if (needleurl == ""){
       if (toggleButton.value == "Matched Only")
         document.getElementById("block" + i).style.display = "block";        
@@ -69,7 +70,7 @@ function searchurl(needleurl){
       document.getElementById("block" + i).classList.remove("displayMatchedURLs");
     }
     i++;
-    hayurl = document.getElementById("block" + i).innerHTML;
+    hayurl = document.getElementById("block" + i);
   }
 }
 
