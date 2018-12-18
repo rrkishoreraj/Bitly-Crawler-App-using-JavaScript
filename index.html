@@ -22,7 +22,7 @@
       </center>  
       <div>
         <input type="radio" name="fetchOption" id="radio1">links.json
-        <input type="radio" name="fetchOption" id="radio2" checked>testfile.json &nbsp
+        <input type="radio" name="fetchOption" id="radio2" checked>coolfile.json &nbsp
         <input type="button" id="fetchurl" value="Fetch URL" onclick="fetchurl()">        
       </div>
       <br><hr>
@@ -35,9 +35,13 @@
       </span>
       <br><br>
     </div>
-    <div id="totalFetchedLinks"><br>&nbsp
-      <span>Total URL's fetched:</span><span id="totalLinks">&nbsp0&nbsp<i>links</i></span>
-      <span id="requestStatus">
+    <div class="row" id="totalFetchedLinks"><br>&nbsp
+      <span class="column">
+          <span>Total URL's fetched:</span>
+          <span id="totalLinks">&nbsp0&nbsp<i>links</i></span> 
+      </span>
+      <span class="column" id="fetchTime">Fetch time: 0ms</span>
+      <span class="column" id="requestStatus">
       Request status code = NIL
       </span><br><br>
     </div>

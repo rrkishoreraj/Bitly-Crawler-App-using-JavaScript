@@ -1,6 +1,8 @@
 // using AJAX call to fetch URL's from specified json file 
-
 function fetchurl(){
+  // start the timer... 
+  var performance = window.performance; // using performance interface to measure the precise time taken by this function
+  var start = performance.now();  // how to measure time taken by a function to execute -- https://www.wikitechy.com/tutorials/javascript/how-to-measure-time-taken-by-a-function-to-execute
   //document.getElementById('fetchurl').disabled = true;
   document.getElementById("displayFetchedUrls").innerHTML = "";
   var option1 = document.getElementById('radio1');
@@ -8,19 +10,22 @@ function fetchurl(){
   if (option1.checked == true)
     requestJSON = "links.json";
   else
-    requestJSON = "test-file.json";
-  var xmlhttp = new XMLHttpRequest();
+    //requestJSON = "test-file.json";
+    requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100";
+  var xmlhttp = new XMLHttpRequest();                                        
   xmlhttp.onreadystatechange = function(){
     document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
     if (this.readyState == 4 && this.status == 200){
       var result = JSON.parse(this.responseText); 
-      displayurl(result);
+      //displayurl(result);
+      displayFromAPI(result);
     }
   }
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();
+  var end = performance.now();  // stop the timer and display the time taken to fetch the URLs
+  document.getElementById('fetchTime').innerHTML = "Fetch time: ~" + Math.round(end - start) + "ms";  
 }
-
 function displayurl(url){
   var i;
   var fetchedurl;
@@ -75,4 +80,24 @@ function displayMatchedURLs(){
   else
     toggleButton.value = "Matched Only";
   searchurl(needleToDisplayMatchedURLs);
+}
+
+
+
+function displayFromAPI(url){
+  var result = document.getElementById("displayFetchedUrls");
+  var i = 0;
+  var links = url["data"]["link_history"];
+  for (; i < links.length; i++){
+    if (links[i]["keyword_link"] !== undefined) {
+      var displayURL = "<br>";
+      var urldiv = document.createElement('div');
+      urldiv.id="block" + i;
+      displayURL += links[i]["keyword_link"] + "<br>";
+      displayURL += links[i]["long_url"] + "<br>" + "<br>";
+      urldiv.innerHTML = displayURL;
+      //result.innerHTML = urldiv + "<br>" + "<br>" + i;
+      result.appendChild(urldiv); // + "<br>" + "<br>" + i;
+    }
+  }
 }
