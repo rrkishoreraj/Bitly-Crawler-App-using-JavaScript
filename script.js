@@ -1,5 +1,6 @@
 var offset = 25200;
 var id = 0;
+var loader = document.getElementById('loader');
 function getButtonChoice(){  //function that gets the input choice and returns the corresponding JSON file
   var requestJSON;
   var option1 = document.getElementById('radio1');
@@ -29,6 +30,7 @@ function checkToggleButton(i){     // checks whether the button's toggled as 'Ma
 function fetchurl(){               // fetches URLs from the specified JSON file
   id = 0;
   totalLinksFetched(id);  
+  loader.classList.add('loader');  // initiate the 'loader' and starts fetching URLs.
   // start the timer... 
   var performance = window.performance; // using performance interface to measure the precise time taken by this function
   var start = performance.now();  // how to measure time taken by a function to execute -- https://www.wikitechy.com/tutorials/javascript/how-to-measure-time-taken-by-a-function-to-execute
@@ -46,6 +48,7 @@ function fetchurl(){               // fetches URLs from the specified JSON file
         displayFromAPI(result);
       else
         displayurl(result);
+      loader.classList.remove('loader');      // removes the 'loader' after fetching URLs.
     }
   }
   xmlhttp.open("GET", requestJSON, true);
@@ -105,8 +108,9 @@ function toggleURLDisplayButton(){   // toggles between 'Matched Only' and 'Show
 
 function displayFromAPI(url){   // function that decides whether to fetch URLs from either 'Myjson-API' or 'Bitly-API'
   displayAPIurl(url);
-  if (document.getElementById('radio4').checked == true)
+  if (document.getElementById('radio4').checked == true){
     fetchNextURL(offset);
+  }
   else
     totalLinksFetched(id);  
 }
@@ -134,6 +138,7 @@ function displayAPIurl(url){   // fetches URls from either 'Myjson-API' or 'Bitl
 
 //https://javascript.info/recursion
 function fetchNextURL(offset){   // a recursive function that fetches next 100 links from 'Bitly-API'
+  loader.classList.add('loader');
   offset += 100;
   var requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
   var xmlhttp = new XMLHttpRequest();                                        
@@ -145,7 +150,8 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
       if (url["data"]["link_history"][0] !== undefined)
         fetchNextURL(offset);
       else {
-        totalLinksFetched(id);
+        totalLinksFetched(id);  
+        loader.classList.remove('loader');      
       }
     }
   }
