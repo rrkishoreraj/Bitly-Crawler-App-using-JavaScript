@@ -1,35 +1,51 @@
-// using AJAX call to fetch URL's from specified json file 
-var offset = 21200;
-function fetchurl(){
-  document.getElementById("totalLinks").innerHTML = " 0 " + "<i>links</i>";  
-  id = 0;
-  // start the timer... 
-  var performance = window.performance; // using performance interface to measure the precise time taken by this function
-  var start = performance.now();  // how to measure time taken by a function to execute -- https://www.wikitechy.com/tutorials/javascript/how-to-measure-time-taken-by-a-function-to-execute
-  //document.getElementById('fetchurl').disabled = true;
-  document.getElementById("displayFetchedUrls").innerHTML = "";
+var offset = 25200;
+var id = 0;
+function getButtonChoice(){  //function that gets the input choice and returns the corresponding JSON file
+  var requestJSON;
   var option1 = document.getElementById('radio1');
   var option2 = document.getElementById('radio2');
   var option3 = document.getElementById('radio3');
-  var requestJSON;
   if (option1.checked == true)
-    requestJSON = "links.json";
+    return requestJSON = "links.json";
   else if (option2.checked == true)
-    requestJSON = "test-file.json";
+    return requestJSON = "test-file.json";
   else if (option3.checked == true)
-    requestJSON = "https://api.myjson.com/bins/skw8e";
+    return requestJSON = "https://api.myjson.com/bins/skw8e";
   else
-    //requestJSON = "test-file.json";
-    requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
+    return requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
+}
+
+
+function checkToggleButton(i){     // checks whether the button's toggled as 'Matched Only' or 'Show All'
+  if (toggleButton.value == "Matched Only")
+    document.getElementById("block" + i).style.display = "block";        
+  else
+    document.getElementById("block" + i).style.display = "none";  
+  document.getElementById("block" + i).classList.remove("displayMatchedURLs");  
+}
+
+
+// using AJAX call to fetch URL's from specified json file 
+function fetchurl(){               // fetches URLs from the specified JSON file
+  id = 0;
+  totalLinksFetched(id);  
+  // start the timer... 
+  var performance = window.performance; // using performance interface to measure the precise time taken by this function
+  var start = performance.now();  // how to measure time taken by a function to execute -- https://www.wikitechy.com/tutorials/javascript/how-to-measure-time-taken-by-a-function-to-execute
+  document.getElementById("displayFetchedUrls").innerHTML = "";
+  var requestJSON = getButtonChoice();
+  var useAPI = 0;
+  if (requestJSON.includes("api"))
+    useAPI = 1;
   var xmlhttp = new XMLHttpRequest();                                        
   xmlhttp.onreadystatechange = function(){
     document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
     if (this.readyState == 4 && this.status == 200){
       var result = JSON.parse(this.responseText); 
-      if ((option1.checked == true) || (option2.checked == true))
-        displayurl(result);
-      else
+      if (useAPI)
         displayFromAPI(result);
+      else
+        displayurl(result);
     }
   }
   xmlhttp.open("GET", requestJSON, true);
@@ -37,7 +53,9 @@ function fetchurl(){
   var end = performance.now();  // stop the timer and display the time taken to fetch the URLs
   document.getElementById('fetchTime').innerHTML = "Fetch time: ~" + Math.round(end - start) + "ms";  
 }
-function displayurl(url){
+
+
+function displayurl(url){   // displays URLs from 'links.json' and 'test-file.json'
   var i;
   var fetchedurl;
   var urldiv;
@@ -49,35 +67,26 @@ function displayurl(url){
     document.getElementById("displayFetchedUrls").appendChild(urldiv)
     //document.getElementsByTagName('body')[0].appendChild(urldiv);
   }     
-  document.getElementById("totalLinks").innerHTML = " " + i + " " + "<i>links</i>";
+  totalLinksFetched(i);
 }
 
 
 var needleToDisplayMatchedURLs = null;
 var toggleButton = document.getElementById("toggleMatchedAll");
 
-function searchurl(needleurl){
+function searchurl(needleurl){    // searches whether the given needle URl matches with the hay URLs and displays matched ones
   needleToDisplayMatchedURLs = needleurl;
   var i = 0;
+  var checkURLMatch;
   var hayurl = document.getElementById("block" + i).innerHTML;
   while (hayurl){
-    if (needleurl == ""){
-      if (toggleButton.value == "Matched Only")
-        document.getElementById("block" + i).style.display = "block";        
-      else
-        document.getElementById("block" + i).style.display = "none";                
-      document.getElementById("block" + i).classList.remove("displayMatchedURLs");
+    checkURLMatch = hayurl.toLowerCase().includes(needleurl.toLowerCase());
+    if (needleurl == "" || !checkURLMatch){
+      checkToggleButton(i);
     }
-    else if (hayurl.toLowerCase().includes(needleurl.toLowerCase())){
+    else if (checkURLMatch){
       document.getElementById("block" + i).style.display = "block";        
       document.getElementById("block" + i).classList.add("displayMatchedURLs");
-    }
-    else{
-      if (toggleButton.value == "Matched Only")
-        document.getElementById("block" + i).style.display = "block";        
-      else
-        document.getElementById("block" + i).style.display = "none";                
-      document.getElementById("block" + i).classList.remove("displayMatchedURLs");
     }
     i++;
     hayurl = document.getElementById("block" + i).innerHTML;
@@ -85,7 +94,7 @@ function searchurl(needleurl){
 }
 
 
-function displayMatchedURLs(){
+function toggleURLDisplayButton(){   // toggles between 'Matched Only' and 'Show ALL'
   if (toggleButton.value == "Matched Only")
     toggleButton.value = "Show All";
   else
@@ -93,34 +102,38 @@ function displayMatchedURLs(){
   searchurl(needleToDisplayMatchedURLs);
 }
 
-var id = 0;
-function displayFromAPI(url){
+
+function displayFromAPI(url){   // function that decides whether to fetch URLs from either 'Myjson-API' or 'Bitly-API'
+  displayAPIurl(url);
+  if (document.getElementById('radio4').checked == true)
+    fetchNextURL(offset);
+  else
+    totalLinksFetched(id);  
+}
+
+
+function displayAPIurl(url){   // fetches URls from either 'Myjson-API' or 'Bitly-API'
   var result = document.getElementById("displayFetchedUrls");
   var i = 0;
   var links = url["data"]["link_history"];
-  for (; i < links.length; i++){
-    //if (links[i]["keyword_link"] !== undefined) {
-      var displayURL = "<br>";
-      var urldiv = document.createElement('div');
-      urldiv.id="block" + id;
-      id++;
-      if (links[i]["keyword_link"] !== undefined)
-        displayURL += links[i]["keyword_link"] + "<br>";
-      displayURL += links[i]["long_url"] + "<br>" + "<br>";
-      urldiv.innerHTML = displayURL;
-      //result.innerHTML = urldiv + "<br>" + "<br>" + i;
-      result.appendChild(urldiv); // + "<br>" + "<br>" + i;
-    //}
+  if (links[0] !== undefined){
+    for (; i < links.length; i++){
+        var displayURL = "<br>";
+        var urldiv = document.createElement('div');
+        urldiv.id="block" + id;
+        id++;
+        if (links[i]["keyword_link"] !== undefined)
+          displayURL += links[i]["keyword_link"] + "<br>";
+        displayURL += links[i]["long_url"] + "<br>" + "<br>";
+        urldiv.innerHTML = displayURL;
+        result.appendChild(urldiv); 
+    }
   }
-  if (document.getElementById('radio4').checked == true)
-    sample(id, offset);
-  else
-    document.getElementById("totalLinks").innerHTML = " " + i + " " + "<i>links</i>";  
 }
 
-//https://javascript.info/recursion
 
-function sample(id, offset){
+//https://javascript.info/recursion
+function fetchNextURL(offset){   // a recursive function that fetches next 100 links from 'Bitly-API'
   offset += 100;
   var requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
   var xmlhttp = new XMLHttpRequest();                                        
@@ -128,33 +141,19 @@ function sample(id, offset){
     document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
     if (this.readyState == 4 && this.status == 200){
       var url = JSON.parse(this.responseText); 
-      //displayurl(result);
-      //displayFromAPI(result);
-      var result = document.getElementById("displayFetchedUrls");
-      var links = url["data"]["link_history"];
-      if (links[0] !== undefined){ // 
-        for (var i = 0; i < links.length; i++){
-          //if (links[i]["keyword_link"] !== undefined) {
-            var displayURL = "<br>";
-            var urldiv = document.createElement('div');
-            urldiv.id="block" + id; 
-            id++;
-            if (links[i]["keyword_link"] !== undefined)
-              displayURL += links[i]["keyword_link"] + "<br>";
-            displayURL += links[i]["long_url"] + "<br>" + "<br>";
-            urldiv.innerHTML = displayURL;
-            //result.innerHTML = urldiv + "<br>" + "<br>" + i;
-            result.appendChild(urldiv); // + "<br>" + "<br>" + i;
-          //}
-        }
-        //id += i;
-        sample(id, offset);
-      }
+      displayAPIurl(url);
+      if (url["data"]["link_history"][0] !== undefined)
+        fetchNextURL(offset);
       else {
-        document.getElementById("totalLinks").innerHTML = " " + id + " " + "<i>links</i>";
+        totalLinksFetched(id);
       }
     }
   }
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();  
+}
+
+
+function totalLinksFetched(n){   //  displays total number of links fetched from the JSON file
+  document.getElementById("totalLinks").innerHTML = " " + n + " " + "<i>links</i>";
 }
