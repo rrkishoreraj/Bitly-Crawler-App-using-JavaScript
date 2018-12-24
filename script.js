@@ -1,4 +1,4 @@
-var offset = 25200;
+var offset = 0;
 var id = 0;
 var loader = document.getElementById('loader');
 function getButtonChoice(){  //function that gets the input choice and returns the corresponding JSON file
@@ -137,7 +137,7 @@ function displayAPIurl(url){   // fetches URls from either 'Myjson-API' or 'Bitl
 
 
 //https://javascript.info/recursion
-function fetchNextURL(offset){   // a recursive function that fetches next 100 links from 'Bitly-API'
+function fetchNextURL(offset){   // a recursive function that fetches next 100 links from 'Bitly-API'. By default, it fetches 1000 links.
   loader.classList.add('loader');
   offset += 100;
   var requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
@@ -147,7 +147,7 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
     if (this.readyState == 4 && this.status == 200){
       var url = JSON.parse(this.responseText); 
       displayAPIurl(url);
-      if (url["data"]["link_history"][0] !== undefined)
+      if (offset != 900)
         fetchNextURL(offset);
       else {
         totalLinksFetched(id);  

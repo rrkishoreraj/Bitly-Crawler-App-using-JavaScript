@@ -75,6 +75,6 @@ h1 {
     text-decoration: none;
 }
 #back2Top:hover {
-    background-color: #DDF;
-    color: #000;
+    background-color: darkgreen/*#DDF*/;
+    color: orange/*#000*/;
 }
