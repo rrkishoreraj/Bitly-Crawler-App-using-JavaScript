@@ -83,11 +83,11 @@ function searchurl(needleurl){    // searches whether the given needle URl match
   var checkURLMatch;
   var hayurl = document.getElementById("block" + i).innerHTML;
   while (hayurl){
-    checkURLMatch = hayurl.toLowerCase().includes(needleurl.toLowerCase());
-    if (needleurl == "" || !checkURLMatch){
+    checkURLMatch = hayurl.toLowerCase().includes(needleurl.toLowerCase()); // checks whether the 'needle' matches with the 'hay' and stores the 'boolean value' into the variable.
+    if (needleurl == "" || !checkURLMatch){  // if the URL is 'not' 'found' or if the 'needle' is 'empty', check the button's value ( toggled as 'Matched Only' or 'Show All' ) and display the unmatched URLs according to it.
       checkToggleButton(i);
     }
-    else if (checkURLMatch){
+    else if (checkURLMatch){                // by default, the matched URLs are always displayed irrespective of the button value ( toggled as 'Matched Only' or 'Show All' ).
       document.getElementById("block" + i).style.display = "block";        
       document.getElementById("block" + i).classList.add("displayMatchedURLs");
     }
@@ -163,3 +163,20 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
 function totalLinksFetched(n){   //  displays total number of links fetched from the JSON file
   document.getElementById("totalLinks").innerHTML = " " + n + " " + "<i>links</i>";
 }
+
+// function to scroll to the top of the page. -- https://html-online.com/articles/dynamic-scroll-back-top-page-button-javascript/
+$(window).scroll(function() {
+    var height = $(window).scrollTop();
+    if (height > 100) {
+        $('#back2Top').fadeIn();
+    } else {
+        $('#back2Top').fadeOut();
+    }
+});
+$(document).ready(function() {
+    $("#back2Top").click(function(event) {
+        event.preventDefault();
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        return false;
+    });
+});
