@@ -1,6 +1,7 @@
 # Bitly Crawler App using JavaScript
 -------------------------------------
 
+Read - http://bit.ly/fetchAPIJavaScript
 
 
 A web application built using JavaScript to fetch the **URLs** from the specific user's **Bitly account**.
