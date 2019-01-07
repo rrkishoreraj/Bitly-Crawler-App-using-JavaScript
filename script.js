@@ -1,6 +1,7 @@
 var offset = 0;
 var id = 0;
 var loader = document.getElementById('loader');
+
 function getButtonChoice(){  //function that gets the input choice and returns the corresponding JSON file
   var requestJSON;
   var option1 = document.getElementById('radio1');
@@ -32,7 +33,7 @@ function fetchurl(){               // fetches URLs from the specified JSON file
   totalLinksFetched(id);  
   loader.classList.add('loader');  // initiate the 'loader' and starts fetching URLs.
   // start the timer... 
-  var performance = window.performance; // using performance interface to measure the precise time taken by this function
+  var performance = window.performance; // using performance object to measure the precise time taken by this function
   var start = performance.now();  // how to measure time taken by a function to execute -- https://www.wikitechy.com/tutorials/javascript/how-to-measure-time-taken-by-a-function-to-execute
   document.getElementById("displayFetchedUrls").innerHTML = "";
   var requestJSON = getButtonChoice();
@@ -120,8 +121,9 @@ function displayAPIurl(url){   // fetches URls from either 'Myjson-API' or 'Bitl
   var result = document.getElementById("displayFetchedUrls");
   var i = 0;
   var links = url["data"]["link_history"];
+  var linksLength = links.length;
   if (links[0] !== undefined){
-    for (; i < links.length; i++){
+    for (; i < linksLength; i++){
         var displayURL = "<br>";
         var urldiv = document.createElement('div');
         urldiv.id="block" + id;
@@ -139,6 +141,7 @@ function displayAPIurl(url){   // fetches URls from either 'Myjson-API' or 'Bitl
 //https://javascript.info/recursion
 function fetchNextURL(offset){   // a recursive function that fetches next 100 links from 'Bitly-API'. By default, it fetches 1000 links.
   loader.classList.add('loader');
+  totalLinksFetched(id);
   offset += 100;
   var requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
   var xmlhttp = new XMLHttpRequest();                                        
@@ -147,7 +150,7 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
     if (this.readyState == 4 && this.status == 200){
       var url = JSON.parse(this.responseText); 
       displayAPIurl(url);
-      if (offset != 900)
+      if (offset != 9900)
         fetchNextURL(offset);
       else {
         totalLinksFetched(id);  
@@ -180,3 +183,4 @@ $(document).ready(function() {
         return false;
     });
 });
+
