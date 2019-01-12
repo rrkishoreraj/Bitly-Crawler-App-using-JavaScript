@@ -67,7 +67,7 @@ function displayurl(url){   // displays URLs from 'links.json' and 'test-file.js
     fetchedurl = url[i]  + "<br>";
     urldiv = document.createElement('div');
     urldiv.id="block" + i;
-    urldiv.innerHTML = fetchedurl;
+    urldiv.innerHTML = fetchedurl + "<hr>";
     document.getElementById("displayFetchedUrls").appendChild(urldiv)
     //document.getElementsByTagName('body')[0].appendChild(urldiv);
   }     
@@ -78,7 +78,9 @@ function displayurl(url){   // displays URLs from 'links.json' and 'test-file.js
 var needleToDisplayMatchedURLs = null;
 var toggleButton = document.getElementById("toggleMatchedAll");
 
+var matchCount;
 function searchurl(needleurl){    // searches whether the given needle URl matches with the hay URLs and displays matched ones
+  matchCount = 0;
   needleToDisplayMatchedURLs = needleurl;
   var i = 0;
   var checkURLMatch;
@@ -91,10 +93,18 @@ function searchurl(needleurl){    // searches whether the given needle URl match
     else if (checkURLMatch){                // by default, the matched URLs are always displayed irrespective of the button value ( toggled as 'Matched Only' or 'Show All' ).
       document.getElementById("block" + i).style.display = "block";        
       document.getElementById("block" + i).classList.add("displayMatchedURLs");
+      matchCount++;
     }
     i++;
-    hayurl = document.getElementById("block" + i).innerHTML;
+    try {
+      hayurl = document.getElementById("block" + i).innerHTML;
+    }
+    catch(e) {
+      console.log(e.description);
+      break;
+    }
   }
+  setTimeout(matchURLCount, 500);
 }
 
 
@@ -124,7 +134,7 @@ function displayAPIurl(url){   // fetches URls from either 'Myjson-API' or 'Bitl
   var linksLength = links.length;
   if (links[0] !== undefined){
     for (; i < linksLength; i++){
-        var displayURL = "<br>";
+        var displayURL = "<hr>";
         var urldiv = document.createElement('div');
         urldiv.id="block" + id;
         id++;
@@ -165,6 +175,17 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
 
 function totalLinksFetched(n){   //  displays total number of links fetched from the JSON file
   document.getElementById("totalLinks").innerHTML = " " + n + " " + "<i>links</i>";
+}
+
+
+function matchURLCount() {
+  // Get the snackbar DIV
+  var snackbar = document.getElementById("matchurlcountsnackbar");
+  snackbar.innerHTML = matchCount + " Matches Found!!!";
+  // Add the "show" class to DIV
+  snackbar.className = "show";
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ snackbar.className = ""; }, 3000);
 }
 
 // function to scroll to the top of the page. -- https://html-online.com/articles/dynamic-scroll-back-top-page-button-javascript/
