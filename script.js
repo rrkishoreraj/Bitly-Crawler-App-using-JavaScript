@@ -2,6 +2,9 @@ var offset = 0;
 var id = 0;
 var loader = document.getElementById('loader');
 
+var bitlyAPI = "https://api-ssl.bitly.com/v3/user/link_history?"
+var accessToken = "1ef1315a2efebd7557de137f776602276d833cb9";
+
 function getButtonChoice(){  //function that gets the input choice and returns the corresponding JSON file
   var requestJSON;
   var option1 = document.getElementById('radio1');
@@ -14,7 +17,8 @@ function getButtonChoice(){  //function that gets the input choice and returns t
   else if (option3.checked == true)
     return requestJSON = "https://api.myjson.com/bins/skw8e";
   else
-    return requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
+    //return requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
+    return requestJSON = bitlyAPI + "access_token=" + accessToken + "&limit=100&offset=" + offset;
 }
 
 
