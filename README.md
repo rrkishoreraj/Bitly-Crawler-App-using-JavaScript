@@ -1,6 +1,7 @@
 # Bitly Crawler App using JavaScript
 -------------------------------------
 
+Read - http://bit.ly/fetchAPIJavaScript
 
 
 A web application built using JavaScript to fetch the **URLs** from the specific user's **Bitly account**.
@@ -11,28 +12,21 @@ A web application built using JavaScript to fetch the **URLs** from the specific
 
 ## Current version of this app:
 
-  The app currently fetches URLs from the two files from the server
-  * links.json
-  * test-file.json
-
-  The **links.json** file contains **35 links** and the **test-file.json** file contains **5005 links**. 
-
-  The **test-file.json** is similar to **Test data** in [Bitly Elm App](https://bitly-elm.glitch.me/). 
-
-  But the only difference is that the **Test data** uses **'API'** to fetch URLs whereas the **testfile.json** uses **'AJAX'** to fetch the URLs.
-
-  The links (URLs) in **testfile.json** is created by simply pasting the links from the **links.json** file for about **143 times** ( 143 x 35 = 5005 links ).
-
-  The links in **json files** are fetched by making an **AJAX Call** to the required JSON file using the **'GET'** request.
-
-  After the URLs are fetched, we can now search for the required URL.
- 
+  The app gets the input choice from the user and performs **'AJAX request'** to respective server and fetches   the URLs from it.  
+  
+  After the URLs are been fetched, the required URLs ( **needle** ) can be searched and filtered from the list   of displayed URLs ( **hay** )
+  
+  ---
+  
+  ### Reason:
+  * To make use of an API and understand how the APIs can be used to get information from different resources.
+  * To understand how **'Bitly API'** can be used to fetch various information from the particular user's         Bitly account.
+  
+  ---
  
 ## Upcoming version of this app:
 
-* To fetch URLs from the bitly account by using **bitly API**.
-* Any users can fetch the URLs from their bitly account by authenticating  their account using the **access token**. 
- 
+  * To implement the **Bitly Crawler App** using **'_`promise`_'**
 -------------------
 
 \ ゜o゜)ノ
