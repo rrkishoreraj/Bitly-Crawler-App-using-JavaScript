@@ -11,18 +11,22 @@
     
     <!-- import the webpage's javascript file -->
     <script src="/script.js" defer></script>
+    <!-- import the jQuery language -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   </head>  
   <body>
     <div class="headercolor">
       <center>
         <header>
           <h1>Bitly Crawler App</h1>
-          <h5><a href="https://github.com/kgashok/Bitly-Crawler-App-using-JavaScript/issues" target="_blank">Issues?</a></h5>
+          <h5><a href="https://github.com/rrkishoreraj/Bitly-Crawler-App-using-JavaScript/issues" target="_blank">Issues?</a></h5>
         </header>
       </center>  
       <div>
-        <input type="radio" name="fetchOption" id="radio1">links.json
-        <input type="radio" name="fetchOption" id="radio2" checked>coolfile.json &nbsp
+        <input type="radio" name="fetchOption" id="radio1">Links.json
+        <input type="radio" name="fetchOption" id="radio2" checked>Test-file.json 
+        <input type="radio" name="fetchOption" id="radio3"> Myjson-API
+        <input type="radio" name="fetchOption" id="radio4"> Bitly-API &nbsp
         <input type="button" id="fetchurl" value="Fetch URL" onclick="fetchurl()">        
       </div>
       <br><hr>
@@ -47,14 +51,21 @@
     </div>
     <br><hr><br>
     <center>
-      <input type="button" id="toggleMatchedAll" value="Matched Only" onclick="displayMatchedURLs()">
+      <input type="button" id="toggleMatchedAll" value="Matched Only" onclick="toggleURLDisplayButton()">
     </center>
     <br>
+    <div id="loader">
+      
+    </div>
     <div id="displayFetchedUrls"> 
+    </div>
+    <div id="matchurlcountsnackbar">
+      
     </div>
     <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
     <script src="https://button.glitch.me/button.js"></script>
+    <a id="back2Top" title="Back to top" href="#">&#10148;</a> 
   </body>
 </html>
