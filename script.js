@@ -45,20 +45,17 @@ function fetchurl(){               // fetches URLs from the specified JSON file
   if (requestJSON.includes("api"))
     useAPI = 1;
   var xmlhttp = new XMLHttpRequest();                                        
-  xmlhttp.onreadystatechange = function(){
-    document.getElementById("requestStatus").innerHTML = "Request status code = " + this.statusText;
-    //if (this.readyState == 4 && this.status == 200){
-    xmlhttp.onload = ()=>{
-      if (this.status == 200){
-        var result = JSON.parse(this.responseText); 
-        if (useAPI)
-          displayFromAPI(result);
-        else
-          displayurl(result);
-        loader.classList.remove('loader');      // removes the 'loader' after fetching URLs.
-      }
+  xmlhttp.onload = function(){
+    if (this.status == 200){
+      document.getElementById("requestStatus").innerHTML = "Request status code = " + this.statusText;
+      var result = JSON.parse(this.responseText); 
+      if (useAPI)
+        displayFromAPI(result);
+      else
+        displayurl(result);
+      loader.classList.remove('loader');      // removes the 'loader' after fetching URLs.
     }
-  }
+  };
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();
   xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); }
@@ -163,22 +160,20 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
   offset += 100;
   var requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
   var xmlhttp = new XMLHttpRequest();                                        
-  xmlhttp.onreadystatechange = function(){
-    document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
     //if (this.readyState == 4 && this.status == 200){
-    xmlhttp.onload = ()=>{
-      if (this.status == 200){
-        var url = JSON.parse(this.responseText); 
-        displayAPIurl(url);
-        if (offset != 9900)
-          fetchNextURL(offset);
-        else {
-          totalLinksFetched(id);  
-          loader.classList.remove('loader');      
-        }
+  xmlhttp.onload = function(){
+    if (this.status == 200){
+      document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
+      var url = JSON.parse(this.responseText); 
+      displayAPIurl(url);
+      if (offset != 9900)
+        fetchNextURL(offset);
+      else {
+        totalLinksFetched(id);  
+        loader.classList.remove('loader');      
       }
     }
-  }
+  };
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();  
   xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); }
