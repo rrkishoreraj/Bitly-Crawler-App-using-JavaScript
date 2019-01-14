@@ -46,7 +46,7 @@ function fetchurl(){               // fetches URLs from the specified JSON file
     useAPI = 1;
   var xmlhttp = new XMLHttpRequest();                                        
   xmlhttp.onreadystatechange = function(){
-    document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
+    document.getElementById("requestStatus").innerHTML = "Request status code = " + this.statusText;
     if (this.readyState == 4 && this.status == 200){
       var result = JSON.parse(this.responseText); 
       if (useAPI)
@@ -58,6 +58,7 @@ function fetchurl(){               // fetches URLs from the specified JSON file
   }
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();
+  xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); }
   var end = performance.now();  // stop the timer and display the time taken to fetch the URLs
   document.getElementById('fetchTime').innerHTML = "Fetch time: ~" + Math.round(end - start) + "ms";  
 }
