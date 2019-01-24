@@ -47,7 +47,7 @@ function fetchurl(){               // fetches URLs from the specified JSON file
   var xmlhttp = new XMLHttpRequest();                                        
   xmlhttp.onload = function(){
     if (this.status == 200){
-      document.getElementById("requestStatus").innerHTML = "Request status code = " + this.statusText;
+      document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
       var result = JSON.parse(this.responseText); 
       if (useAPI)
         displayFromAPI(result);
