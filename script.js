@@ -58,7 +58,7 @@ function fetchurl(){               // fetches URLs from the specified JSON file
   }
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();
-  xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); }
+  xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); };
   var end = performance.now();  // stop the timer and display the time taken to fetch the URLs
   document.getElementById('fetchTime').innerHTML = "Fetch time: ~" + Math.round(end - start) + "ms";  
 }
@@ -175,6 +175,7 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
   }
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();  
+  xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); };
 }
 
 
