@@ -44,21 +44,34 @@ function fetchurl(){               // fetches URLs from the specified JSON file
   var useAPI = 0;
   if (requestJSON.includes("api"))
     useAPI = 1;
-  var xmlhttp = new XMLHttpRequest();                                        
-  xmlhttp.onreadystatechange = function(){
-    document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
-    if (this.readyState == 4 && this.status == 200){
-      var result = JSON.parse(this.responseText); 
-      if (useAPI)
-        displayFromAPI(result);
-      else
-        displayurl(result);
-      loader.classList.remove('loader');      // removes the 'loader' after fetching URLs.
+  var promise = new Promise(function(resolve, reject){
+    var xmlhttp = new XMLHttpRequest();                                        
+    xmlhttp.onreadystatechange = function(){
+      document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
+      if (this.readyState == 4){
+        if (this.status == 200){
+          var result = JSON.parse(this.responseText); 
+          if (useAPI){
+            displayFromAPI(result);
+            resolve(xmlhttp.status);
+          }
+          else{
+            displayurl(result);
+            resolve(xmlhttp.status);
+          }
+          loader.classList.remove('loader');      // removes the 'loader' after fetching URLs.
+        }
+        else
+          reject(xmlhttp.status);
+      }
+      else{
+        console.log("Processing Request...");
+      }
     }
-  }
-  xmlhttp.open("GET", requestJSON, true);
-  xmlhttp.send();
-  xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); };
+    xmlhttp.open("GET", requestJSON, true);
+    xmlhttp.send();
+    xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); };  
+  }).then(success => console.log(success + ": Data fetched successfully!!!"), error => console.log(new Error(error)));
   var end = performance.now();  // stop the timer and display the time taken to fetch the URLs
   document.getElementById('fetchTime').innerHTML = "Fetch time: ~" + Math.round(end - start) + "ms";  
 }
@@ -159,23 +172,34 @@ function fetchNextURL(offset){   // a recursive function that fetches next 100 l
   totalLinksFetched(id);
   offset += 100;
   var requestJSON = "https://api-ssl.bitly.com/v3/user/link_history?access_token=1ef1315a2efebd7557de137f776602276d833cb9&limit=100&offset=" + offset;
-  var xmlhttp = new XMLHttpRequest();                                        
-  xmlhttp.onreadystatechange = function(){
-    document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
-    if (this.readyState == 4 && this.status == 200){
-      var url = JSON.parse(this.responseText); 
-      displayAPIurl(url);
-      if (offset != 9900)
-        fetchNextURL(offset);
-      else {
-        totalLinksFetched(id);  
-        loader.classList.remove('loader');      
+  var promise = new Promise(function(resolve, reject){
+    var xmlhttp = new XMLHttpRequest();                                        
+    xmlhttp.onreadystatechange = function(){
+      document.getElementById("requestStatus").innerHTML = "Request status code = " + this.status;
+      if (this.readyState == 4){
+        if (this.status == 200){
+          var url = JSON.parse(this.responseText); 
+          displayAPIurl(url);
+          if (offset != 9900)
+            fetchNextURL(offset);
+          else {
+            totalLinksFetched(id);  
+            loader.classList.remove('loader');      
+          }
+          resolve(xmlhttp.status);
+        }
+        else{
+          reject(xmlhttp.status);
+        }
+      }
+      else{
+        console.log("Processing Request...");
       }
     }
-  }
   xmlhttp.open("GET", requestJSON, true);
   xmlhttp.send();  
   xmlhttp.onerror = ()=>{ alert('Network error: Please check your internet connection'); loader.classList.remove('loader'); };
+  }).then(success => console.log(success + ": Data fetched successfully!!!"), error => console.log(new Error(error)));
 }
 
 
