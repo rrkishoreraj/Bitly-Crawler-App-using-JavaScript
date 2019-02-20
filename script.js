@@ -257,6 +257,14 @@ function matchURLCount() {
   setTimeout(function(){ snackbar.className = ""; }, 3000);
 }
 
+function searchDescription() {
+  var snackbar = document.getElementById("searchDescription");
+  snackbar.innerHTML = "Press <b>'ENTER'</b> to perform search!.";
+  snackbar.className = "display";
+  setTimeout(function(){ snackbar.className = ""; }, 5500);
+}
+
+
 // function to scroll to the top of the page. -- https://html-online.com/articles/dynamic-scroll-back-top-page-button-javascript/
 $(window).scroll(function() {
     var height = $(window).scrollTop();

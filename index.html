@@ -14,7 +14,7 @@
     <!-- import the jQuery language -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   </head>  
-  <body>
+  <body onload="searchDescription()">
     <div class="headercolor">
       <center>
         <header>
@@ -35,9 +35,12 @@
       <br>&nbsp
       <span>
         <label>Search URL's: </label>
-        <input type="text" placeholder="bit.ly" id="input" onkeypress="triggerSearch(event)">
+        <input type="text" placeholder="Eg: bit.ly;google.com" id="input" onkeypress="triggerSearch(event)">
       </span>
       <br><br>
+    </div>
+    <div id="searchDescription">
+       
     </div>
     <div class="row" id="totalFetchedLinks"><br>&nbsp
       <span class="column">
