@@ -93,12 +93,52 @@ function displayurl(url){   // displays URLs from 'links.json' and 'test-file.js
 }
 
 
+//   https://codehandbook.org/how-to-remove-duplicates-from-javascript-array/
+function removeDuplicatesFromMatchIndex(matchIndex){  // function to remove duplicates from the matched index ('matchIndex') array.
+  var uniqueMatchIndex = [];
+  for (var i = 0; i < matchIndex.length; i++){
+    if (uniqueMatchIndex.indexOf(matchIndex[i]) == -1)
+      uniqueMatchIndex.push(matchIndex[i]);
+  }
+  return uniqueMatchIndex;
+}
+
+
+function splitURLInput(){   //   function that splits the given 'input URL tokens'.
+  matchIndex.splice(0);
+  var urlList = document.getElementById('input').value;
+  var splitStrings = urlList.split(';');
+  var i = 0;
+  for (; i < splitStrings.length; i++){
+    searchurl(splitStrings[i]);
+  }
+  var uniqueMatchIndex = removeDuplicatesFromMatchIndex(matchIndex);  
+  for (i = 0; i < uniqueMatchIndex.length; i++){
+    document.getElementById("block" + uniqueMatchIndex[i]).style.display = "block";        
+    document.getElementById("block" + uniqueMatchIndex[i]).classList.add("displayMatchedURLs");
+  }
+  console.log(uniqueMatchIndex);
+  matchCount = uniqueMatchIndex.length;
+  setTimeout(matchURLCount, 500);  
+}
+
+
+var matchCount;
+var matchIndex = [];
+//  https://memorynotfound.com/detect-enter-keypress-javascript-jquery/
+function triggerSearch(e){      //  function that triggers the splitURLInput() and searchurl() (searching process) when ENTER key is pressed.
+  var key = (e.keyCode ? e.keyCode : e.which);
+  if (key == '13'){
+    matchCount = 0;
+    splitURLInput();
+  }
+}
+
+
 var needleToDisplayMatchedURLs = null;
 var toggleButton = document.getElementById("toggleMatchedAll");
 
-var matchCount;
 function searchurl(needleurl){    // searches whether the given needle URl matches with the hay URLs and displays matched ones
-  matchCount = 0;
   needleToDisplayMatchedURLs = needleurl;
   var i = 0;
   var checkURLMatch;
@@ -109,9 +149,9 @@ function searchurl(needleurl){    // searches whether the given needle URl match
       checkToggleButton(i);
     }
     else if (checkURLMatch){                // by default, the matched URLs are always displayed irrespective of the button value ( toggled as 'Matched Only' or 'Show All' ).
-      document.getElementById("block" + i).style.display = "block";        
-      document.getElementById("block" + i).classList.add("displayMatchedURLs");
-      matchCount++;
+      /*document.getElementById("block" + i).style.display = "block";        
+      document.getElementById("block" + i).classList.add("displayMatchedURLs");*/
+      matchIndex.push(i);
     }
     i++;
     try {
@@ -122,7 +162,6 @@ function searchurl(needleurl){    // searches whether the given needle URl match
       break;
     }
   }
-  setTimeout(matchURLCount, 500);
 }
 
 
@@ -131,7 +170,7 @@ function toggleURLDisplayButton(){   // toggles between 'Matched Only' and 'Show
     toggleButton.value = "Show All";
   else
     toggleButton.value = "Matched Only";
-  searchurl(needleToDisplayMatchedURLs);
+  splitURLInput();
 }
 
 
