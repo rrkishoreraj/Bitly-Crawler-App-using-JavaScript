@@ -10,9 +10,9 @@ A web application built using JavaScript to fetch the **URLs** from the specific
 ### Inspired by ["Elm for Bitly"](https://bitly-elm.glitch.me/) - App built using **'Elm script'**, and recreated  with **'JavaScript'** version
 ---
 
-## Current version of this app:
+## What does this app do?
 
-  The app gets the input choice from the user and performs **'AJAX request'** to respective server and fetches   the URLs from it.  
+  The app gets the input choice from the user and performs **'AJAX request'** (implemented along with **'_`promise`_'**) to respective server and fetches   the URLs from it.  
   
   After the URLs are been fetched, the required URLs ( **needle** ) can be searched and filtered from the list   of displayed URLs ( **hay** )
   
@@ -24,9 +24,6 @@ A web application built using JavaScript to fetch the **URLs** from the specific
   
   ---
  
-## Upcoming version of this app:
 
-  * To implement the **Bitly Crawler App** using **'_`promise`_'**
--------------------
 
 \ ゜o゜)ノ
